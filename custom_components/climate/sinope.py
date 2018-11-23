@@ -80,7 +80,6 @@ class SinopeThermostat(ClimateDevice):
         self._mode = None
         self._state = None
         self._away = False
-        self._wattage = None
 
     def update(self):
         """Get the latest data from Sinope and update the state."""
@@ -89,7 +88,6 @@ class SinopeThermostat(ClimateDevice):
         self._cur_temp =  float(self.sinope_data.data[self.device_id]["data"]["temperature"])
         self._mode = float(self.sinope_data.data[self.device_id]["data"]["mode"])
         self._state = float(self.sinope_data.data[self.device_id]["data"]["heatLevel"])
-        self._wattage = float(self.sinope_data.data[self.device_id]["info"]["wattage"])
 
     @property
     def supported_features(self):
@@ -141,11 +139,6 @@ class SinopeThermostat(ClimateDevice):
             return STATE_HEAT
         return STATE_IDLE
 
-    @property
-    def current_wattage(self):
-        """Return the current wattage used by the thermostat"""
-        return self._wattage
-
     def mode(self):
         return self._mode
 
@@ -182,7 +175,7 @@ class SinopeClient(object):
         self._gateway_data = {}
         self._cookies = None
         self._timeout = timeout
-
+        
         self._post_login_page()
         self._get_data_gateway()
 
